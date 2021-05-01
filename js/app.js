@@ -11,10 +11,44 @@ fetch(userAPI)
 
 // HELPER FUNCTIONS
 function generateHTML(data) {
-    console.log(data.results);
+    const employeesContainer = document.getElementById('gallery');
+    const employees = data.results;
+    console.log(employees);
+    // create a card for each user in employees
+    for (let i = 0; i < employees.length; i++) {
+    const employee = employees[i];
     // display the results to the screen in their cards
+    const card = document.createElement('div');
+    card.classList.add('card');
+    const cardImageContainer = document.createElement('div');
+    cardImageContainer.classList.add('card-img-container');
+    const profileImg = document.createElement('img');
+    profileImg.setAttribute('src', employee.picture.large);
+    profileImg.classList.add('card-img');
+    profileImg.setAttribute('alt', 'profile picture');
+    cardImageContainer.appendChild(profileImg);
+    const cardInfoContainer = document.createElement('div');
+    cardInfoContainer.classList.add('card-info-container');
+    const nameTitle = document.createElement('h3');
+    nameTitle.setAttribute('id', `${employee.name.first}-${employee.name.last}`);
+    nameTitle.classList.add('card-name', 'cap');
+    nameTitle.innerText  = `${employee.name.first} ${employee.name.last}`;
+    cardInfoContainer.appendChild(nameTitle);
+    const employeeEmail = document.createElement('p');
+    employeeEmail.classList.add('card-text');
+    employeeEmail.innerText = `${employee.email}`;
+    cardInfoContainer.appendChild(employeeEmail);
+    const employeeLocation = document.createElement('p');
+    employeeLocation.classList.add('card-text');
+    employeeLocation.innerText = `${employee.location.city}, ${employee.location.state}`;
+    cardInfoContainer.appendChild(employeeLocation);
+    card.appendChild(cardImageContainer);
+    card.appendChild(cardInfoContainer);
+
+    employeesContainer.insertAdjacentElement('beforeend', card);
     /*
     <div class="card">
+    
         <div class="card-img-container">
             <img class="card-img" src="https://placehold.it/90x90" alt="profile picture">
         </div>
@@ -25,5 +59,7 @@ function generateHTML(data) {
         </div>
     </div>
     */
+
+}
 }
 
