@@ -10,13 +10,9 @@ fetch(userAPI)
   .then(generateHTML);
 
 // HELPER FUNCTIONS
-function generateHTML(data) {
-    const employeesContainer = document.getElementById('gallery');
-    const employees = data.results;
-    console.log(employees);
-    // create a card for each user in employees
-    for (let i = 0; i < employees.length; i++) {
-    const employee = employees[i];
+
+function createEmployeeCard(employee) {
+    console.log(employee);
     // display the results to the screen in their cards
     const card = document.createElement('div');
     card.classList.add('card');
@@ -44,8 +40,6 @@ function generateHTML(data) {
     cardInfoContainer.appendChild(employeeLocation);
     card.appendChild(cardImageContainer);
     card.appendChild(cardInfoContainer);
-
-    employeesContainer.insertAdjacentElement('beforeend', card);
     /*
     <div class="card">
     
@@ -59,7 +53,25 @@ function generateHTML(data) {
         </div>
     </div>
     */
+    card.addEventListener('click', (e) => {
+        console.log(e.target);
+        console.log(employee);
+    });
 
+    return card;
+}
+
+function generateHTML(data) {
+    const employeesContainer = document.getElementById('gallery');
+    const employees = data.results;
+    console.log(employees);
+    // create a card for each user in employees
+    for (let i = 0; i < employees.length; i++) {
+    const employee = employees[i];
+    const card = createEmployeeCard(employee);
+    employeesContainer.insertAdjacentElement('beforeend', card);
 }
 }
 
+// instead of calling generate html we could call setEmployees which would be a function that returns employees so that we have an array of the employees that we can use
+// this way we can iterate over the array when using the modal 
