@@ -1,18 +1,23 @@
 //console.log('Hello, World!');
 
 
-// declare the API URL 
+/** URL to the Random User API */
 const userAPI = 'https://randomuser.me/api/?results=12'
-// Fetch the api data and console.log when complete.
+
+/** fetch the data from API and use it to generate Employee Directory HTML */
 // code from https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 fetch(userAPI)
   .then(response => response.json())
   .then(generateHTML);
 
 // HELPER FUNCTIONS
+/**
+ * UpdateModal creates a modal element and adds it to the body of the document
+ * @param {object} employee - employee object containing employee information
+ */
 function updateModal(employee) {
     const body = document.getElementsByTagName('body')[0];
-    console.log('body', body);
+    //console.log('body', body);
     let modalContainer = document.createElement('div');
     modalContainer.classList.add('modal-container');
     let modal = document.createElement('div');
@@ -25,6 +30,7 @@ function updateModal(employee) {
     strong.innerText = "X";
     strong.cl
     button.appendChild(strong);
+    // Add event listener to remove the modal from document
     button.addEventListener('click', (e) => { 
         button.parentNode.parentNode.remove();
     });
@@ -59,9 +65,8 @@ function updateModal(employee) {
     modalInfoContainer.appendChild(address);
     let birthday = document.createElement('p');
     birthday.classList.add('modal-text');
+    // create birthday object from employee data so we can manipulate using date methods
     let birthdayObject = new Date(employee.dob.date);
-    //birthday.innerText = `Birthday: ${employee.dob.date}`;
-    console.log(birthdayObject);
     birthday.innerText = `Birthday: ${birthdayObject.getMonth() + 1}/${birthdayObject.getUTCDate()}/${birthdayObject.getFullYear()}`;
     modalInfoContainer.appendChild(birthday);
     modal.appendChild(modalInfoContainer);
@@ -87,9 +92,14 @@ function updateModal(employee) {
 */
 }
 
+/**
+ * This function creates and returns an dom element containing the employee information.
+ *
+ * @param {object} employee - An employee object from the Random User API
+ * @return {object} card - Document Object containing the employee information html
+ *
+ */
 function createEmployeeCard(employee) {
-    console.log(employee);
-    // display the results to the screen in their cards
     const card = document.createElement('div');
     card.classList.add('card');
     const cardImageContainer = document.createElement('div');
@@ -129,20 +139,23 @@ function createEmployeeCard(employee) {
         </div>
     </div>
     */
+
+    // add event listener to card so modal displays when clicked
     card.addEventListener('click', (e) => {
-        console.log(e.target);
-        console.log(employee);
         updateModal(employee);
     });
 
     return card;
 }
 
+/**
+ * This function loops through the employee data and calls createEmployeeCard on each
+ *
+ * @param {object} data - object containing employee data from Random User API
+ */
 function generateHTML(data) {
     const employeesContainer = document.getElementById('gallery');
     const employees = data.results;
-    console.log(employees);
-    // create a card for each user in employees
     for (let i = 0; i < employees.length; i++) {
         const employee = employees[i];
         const card = createEmployeeCard(employee);
